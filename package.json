@@ -1,0 +1,29 @@
+{
+  "name": "react-graphql-apollo-tutorial-boilerplate",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "apollo-cache-inmemory": "^1.5.1",
+    "apollo-client": "^2.5.1",
+    "apollo-link-http": "^1.5.14",
+    "graphql": "^14.2.1",
+    "graphql-tag": "^2.10.1",
+    "react": "^16.6.0",
+    "react-apollo": "^2.5.3",
+    "react-dom": "^16.6.0",
+    "react-scripts": "2.1.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "build-rename": "npm run build && for i in ./build/static/*/*; do cp $i `echo $i | sed -E \"s/\\.[0-9a-z]{8}\\./\\.drupal\\./g\"`; done",
+    "test": "react-scripts test --env=jsdom --passWithNoTests",
+    "eject": "react-scripts eject"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
+}
