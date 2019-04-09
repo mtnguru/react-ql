@@ -3,12 +3,21 @@ import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
 const GET_NODES = gql`
-  {
-    nodeQuery {
+  query($types: [String]!) {
+    nodeQuery (
+      limit: 40
+      filter: {
+        conditions: [
+          {field: "type", value: $types}
+#         {field: "uid", value: ["1"]}
+        ]
+      }
+    ) {
       count
       entities {
         entityId
         entityLabel
+        entityBundle
         
         ... on Node {
           entityRendered(mode: TEASER) 
@@ -22,8 +31,12 @@ const GET_NODES = gql`
 
 class Stream extends Component {
   render() {
+    let types = ['page', 'landing_page', 'article'];
     return (
-      <Query query={GET_NODES}>
+      <Query
+        query={GET_NODES}
+        variables={{types}}
+      >
         {(response) => {
           let num = 0;
           const {nodeQuery} = response.data;
@@ -32,18 +45,28 @@ class Stream extends Component {
           }
           return (
             <div className="maestro-stream">
-              <ul>
-                {
-                  nodeQuery.entities.map(item => {
-                    return <li key={item.entityId}>{++num} {item.entityId} - {item.entityLabel}</li>;
-                  })
-                }
-              </ul>
+              {
+                nodeQuery.entities.map(item => {
+                  debugger;
+                  // Change file path to point to drupal site.
+                  let content = item.entityRendered.replace("/sites/default/files", "http://light/sites/default/files");
+
+                  return (
+                    <div
+                      key={item.entityId}
+                      className="maestro-item"
+                    >
+                      <div className="header">{item.entityBundle}</div>
+                      <div className="rendered" dangerouslySetInnerHTML={{ __html: content}} />
+                    </div>
+                  )
+                })
+              }
             </div>
           );
         }}
       </Query>
-    );
+    )
   }
 }
 
