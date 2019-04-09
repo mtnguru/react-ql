@@ -22,7 +22,7 @@ class Profile extends Component {
             return null;
           }
           return (
-            <div className="maestro-profile">User - {currentUserContext.entityId} - {currentUserContext.entityLabel}</div>
+            <div className="maestro-profile">User: {currentUserContext.entityId} - {currentUserContext.entityLabel}</div>
           );
         }}
       </Query>
